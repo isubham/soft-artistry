@@ -1,0 +1,7 @@
+function (error, data)
+    { 
+        if (error) {
+            throw error
+        }
+        else return data
+    }
