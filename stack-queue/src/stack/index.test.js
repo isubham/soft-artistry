@@ -22,10 +22,14 @@ describe('Stack', () => {
     expect(tasks.length).toBe(0)
     tasks.push(22)
     expect(tasks.length).toBe(1)
-	tasks.pop()
+	  tasks.pop()
+  })
+
+  test('peek', () => {
     expect(tasks.length).toBe(0)
-
-
+    tasks.push(22)
+    tasks.push(233)
+    expect(tasks.peek()).toBe(233)
   })
 
 })

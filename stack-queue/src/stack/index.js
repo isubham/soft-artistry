@@ -18,6 +18,11 @@ Stack.prototype.pop = function() {
   this.length -= 1
 }
 
+Stack.prototype.peek = function() {
+  return this._data[this._data.length - 1]
+};
+
+
 export default Stack
 export { Stack }
 
