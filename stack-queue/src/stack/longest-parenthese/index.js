@@ -12,7 +12,6 @@ const longestParentheses = (s) => {
 
 	const stack = new Stack();
 	for (let char of s) {
-		console.log(char, stack)
 		if (char == '(')
 		{
 			stack.push(char)
