@@ -60,7 +60,7 @@ export const getBreakers = (elevations) => {
 
 const trapRainWater = (elevations) => {
 
-    if (elevations.length == 2) {
+    if (elevations.length < 3) {
         return 0
     }
 
@@ -72,13 +72,9 @@ const trapRainWater = (elevations) => {
     while(breakers.length > 0) {
         const {pos: posLeftSide, elevation: elevationLeftSide} = breakers.pop();
         const waterLevel = Math.min(elevation, elevationLeftSide);
-        console.log(`looping over pos ${pos} with elevation ${elevation} and pos ${posLeftSide} with elevation ${elevationLeftSide}`)
-
         for (let i = posLeftSide + 1; i < pos; i++) {
             const elevationAtPos = elevations[i];
             const waterToBeFilledAtPos = waterLevel - elevationAtPos;
-
-            console.log(`water filled at index ${i} with value ${elevationAtPos} is ${waterToBeFilledAtPos}`);
             totalWaterFilled += waterToBeFilledAtPos
         }
 
