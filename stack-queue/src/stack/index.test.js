@@ -8,10 +8,6 @@ describe('Stack', () => {
     tasks = new Stack()
   })
 
-  test('should have default properties', () => {
-    expect(tasks._author).toBe('subhamkumarchandrawansi@gmail.com')
-  })
-
   test('should push', () => {
     expect(tasks.length).toBe(0)
     tasks.push(22)
@@ -31,6 +27,12 @@ describe('Stack', () => {
     tasks.push(233)
     expect(tasks.peek()).toBe(233)
   })
-
+  
+  test('display', () => {
+    expect(tasks.length).toBe(0)
+    tasks.push(22)
+    tasks.push(233)
+    console.log(tasks.toString())
+  })
 })
 

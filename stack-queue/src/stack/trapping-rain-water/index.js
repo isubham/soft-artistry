@@ -1,28 +1,92 @@
 import Stack from "..";
 
-const trapRainWater = (elevationMap) => {
-    if (elevationMap.length == 2) {
+export const getBreakers = (elevations) => {
+
+    let breakers = new Stack();
+    for (let i = 0; i < elevations.length; i++) {
+        let elevation = elevations[i];
+
+        if (elevation == 0) {
+            continue;
+        }
+
+        const currentElevation = {pos: i, elevation: elevation}
+
+        // fills 2 breakers if it is non-empty
+        if (breakers.length < 2 && elevation > 0 ) {
+            breakers.push(currentElevation);
+        }
+
+        else {
+
+            const lastElementIsLowerThanCurrentElevation = () => {
+                const isTrue = breakers.peek().elevation < elevation
+                return isTrue;
+            } 
+
+            const ishavingMoreThanOneElementAnd = () => {
+                const isTrue = breakers.length > 1 
+                return isTrue;
+            }
+
+
+            const popOnlyIfElementIsLessThanItsPrevious = () => {
+                let popped = false;
+
+                const elementPopped = breakers.pop();
+                popped = true;
+
+                if (elementPopped.elevation > breakers.peek().elevation) {
+                    breakers.push(elementPopped)
+                    popped = false;
+                }
+                return popped;
+            }
+
+            let popped = true;
+            while (ishavingMoreThanOneElementAnd() && lastElementIsLowerThanCurrentElevation() && popped) {
+                popped = popOnlyIfElementIsLessThanItsPrevious()
+            }
+
+            if (popped || lastElementIsLowerThanCurrentElevation()) {
+                breakers.push(currentElevation);
+            }
+        }
+        
+
+    }
+    return breakers;
+}
+
+const trapRainWater = (elevations) => {
+
+    if (elevations.length == 2) {
         return 0
     }
 
-    let prevPeak = -Infinity
-    let currentPeak = -Infinity
+    const breakers = getBreakers(elevations);
+    console.log(`breakers`, breakers.toString())
+    let totalWaterFilled = 0;
 
-    let waterCount = 0
-    let landCount = 0
-    for (let i = 0; i < elevationMap.length; i++) {
-        let height =  elevationMap[i];
-        
-        if (prevPeak <= height) {
-            prevPeak = height;
+    let {pos, elevation} = breakers.pop();
+    while(breakers.length > 0) {
+        const {pos: posLeftSide, elevation: elevationLeftSide} = breakers.pop();
+        const waterLevel = Math.min(elevation, elevationLeftSide);
+        console.log(`looping over pos ${pos} with elevation ${elevation} and pos ${posLeftSide} with elevation ${elevationLeftSide}`)
+
+        for (let i = posLeftSide + 1; i < pos; i++) {
+            const elevationAtPos = elevations[i];
+            const waterToBeFilledAtPos = waterLevel - elevationAtPos;
+
+            console.log(`water filled at index ${i} with value ${elevationAtPos} is ${waterToBeFilledAtPos}`);
+            totalWaterFilled += waterToBeFilledAtPos
         }
-        else {
-            waterCount += currentMax - height
-        }
-        
+
+        pos = posLeftSide; elevation = elevationLeftSide;
     }
-    return waterCount;
-    
+
+    return totalWaterFilled;
+
 };
 
 export { trapRainWater };
